@@ -7,16 +7,16 @@ public class Developer extends General_Id {
 
     private String name;
     private String specialty;
-    private Set<Skill> skill;
     private Account account;
+    private Set<Skill> skill;
 
 
-    public Developer(Long id, String name, String specialty, Set<Skill> skill, Account account, Set<Skill> skils) {
+    public Developer(Long id, String name, String specialty, Account account, Set<Skill> skill) {
         super(id);
         this.name = name;
         this.specialty = specialty;
-        this.skill = skill;
         this.account = account;
+        this.skill = skill;
 
     }
 

@@ -14,7 +14,7 @@ public class SkillsController {
     public SkillsController() throws IOException {
     }
 
-    public Skill create(Skill skill) {
+    public Skill create(Skill skill) throws IOException {
         return skillRepository.create(skill);
     }
 

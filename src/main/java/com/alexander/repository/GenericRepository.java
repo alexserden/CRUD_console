@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface GenericRepository<T, ID> {
-    T create(T t);
+    T create(T t) throws IOException;
 
     void delete(ID id);
 

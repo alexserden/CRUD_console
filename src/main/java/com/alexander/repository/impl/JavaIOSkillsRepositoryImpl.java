@@ -7,21 +7,27 @@ import com.alexander.repository.SkillRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JavaIOSkillsRepositoryImpl implements SkillRepository {
-     List<Skill> skills;
+    Path paths = Paths.get("src/main/resource/skills.txt");
+
+    List<Skill> skills;
      BufferedReader bufferedReader;
      private Long countId = 0L;
     public JavaIOSkillsRepositoryImpl() throws IOException {
         skills = new ArrayList<>();
-        bufferedReader = Files.newBufferedReader(Paths.get("src/main/resource/skills.txt"));
+        bufferedReader = Files.newBufferedReader(paths);
     }
 
     @Override
-    public Skill create(Skill skill) {
+    public Skill create(Skill skill) throws IOException {
+        String text = "\n"+skill.getSkill();
+        Files.write(paths,text.getBytes(),StandardOpenOption.APPEND);
         return null;
     }
 
@@ -41,9 +47,10 @@ public class JavaIOSkillsRepositoryImpl implements SkillRepository {
 
     @Override
     public List<Skill> getAll() throws IOException {
+
         while(bufferedReader.ready()){
               String s = bufferedReader.readLine();
-            skills.add(new Skill(countId++,s));
+            skills.add(new Skill(++countId,s));
         }
         return skills;
     }

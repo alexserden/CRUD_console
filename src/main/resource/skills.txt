@@ -1,5 +1,4 @@
-1 Java
-2 C++
-3 PHP
-4 UI/UX
-5 Pascal
+Java
+Pascal
+Pascal
+Pascal

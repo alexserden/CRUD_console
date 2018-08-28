@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DeveloperRepository extends GenericRepository<Developer,Long>{
-    Developer create(Developer developer);
+    Developer create(Developer developer) throws IOException;
 
     void delete(Long id);
 

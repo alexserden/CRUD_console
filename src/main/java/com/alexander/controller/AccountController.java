@@ -14,7 +14,7 @@ public class AccountController {
         accountRepository = new JavaIOAccountRepositoryImpl();
     }
 
-    public Account create(Account account) {
+    public Account create(Account account) throws IOException {
         return accountRepository.create(account);
     }
 

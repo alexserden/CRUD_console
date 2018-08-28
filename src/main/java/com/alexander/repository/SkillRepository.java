@@ -4,10 +4,10 @@ import com.alexander.model.Skill;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
+
 
 public interface SkillRepository extends GenericRepository<Skill,Long> {
-    Skill create(Skill t);
+    Skill create(Skill t) throws IOException;
 
     void delete(Long id);
 

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface AccountRepository extends GenericRepository<Account,Long>{
-    Account create(Account account);
+    Account create(Account account) throws IOException;
 
     void delete(Long id);
 

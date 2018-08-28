@@ -6,23 +6,29 @@ import com.alexander.repository.AccountRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JavaIOAccountRepositoryImpl implements AccountRepository {
+    Path paths = Paths.get("src/main/resource/accounts.txt");
+
     BufferedReader bufferedReader;
-    private Long countId  = 0L;
+    private Long countId  = 1L;
     List<Account> accounts;
 
     public JavaIOAccountRepositoryImpl() throws IOException {
         accounts = new ArrayList<>();
-        bufferedReader = Files.newBufferedReader(Paths.get("src/main/resource/accounts.txt"));
+        bufferedReader = Files.newBufferedReader(paths);
     }
 
     @Override
-    public Account create(Account account) {
-        return null;
+    public Account create(Account account) throws IOException {
+            String text = "\n"+account.getAccount();
+        Files.write(paths,text.getBytes(),StandardOpenOption.APPEND);
+          return null;
     }
 
     @Override

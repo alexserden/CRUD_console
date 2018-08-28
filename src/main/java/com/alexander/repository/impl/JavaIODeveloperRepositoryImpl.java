@@ -1,6 +1,5 @@
 package com.alexander.repository.impl;
 
-import com.alexander.model.Account;
 import com.alexander.model.Developer;
 import com.alexander.model.Skill;
 import com.alexander.repository.AccountRepository;
@@ -8,10 +7,13 @@ import com.alexander.repository.DeveloperRepository;
 import com.alexander.repository.SkillRepository;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,17 +24,29 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     SkillRepository skillRepository;
     BufferedReader bufferedReader;
     List<Developer> developers;
+    Path paths = Paths.get("src/main/resource/developers.txt");
+
     private Long countId = 0L;
     public JavaIODeveloperRepositoryImpl() throws IOException {
          accountRepository = new JavaIOAccountRepositoryImpl();
          skillRepository = new JavaIOSkillsRepositoryImpl();
-        bufferedReader  = Files.newBufferedReader(Paths.get("src/main/resource/developers.txt"));
+        bufferedReader  = Files.newBufferedReader(paths);
+
         developers = new ArrayList<>();
     }
 
     @Override
-    public Developer create(Developer developer) {
-        return null;
+    public Developer create(Developer developer) throws IOException {
+
+        String text = "\n"+developer.getId()+" "+developer.getName()+" "+developer.getSpecialty();
+        Files.write(paths,text.getBytes(),StandardOpenOption.APPEND);
+        accountRepository.create(developer.getAccount());
+        String skill = "";
+        for (Skill s : developer.getSkill()) {
+            skill = s.getSkill() + skill;
+        }
+        skillRepository.create(new Skill(developer.getId(),skill));
+return null;
     }
 
     @Override
@@ -50,22 +64,19 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         Long id;
         String name;
         String specialty;
-        Set<Skill>  skils = new HashSet<>();
 
         while(bufferedReader.ready()){
+            Set<Skill>  skils = new HashSet<>();
             String s = bufferedReader.readLine();
             String [] temp = s.split(" ");
              id = Long.valueOf(temp[0]);
              name = temp[1];
              specialty = temp[2];
-//              String setSkill = skillRepository.getById(id).getSkill();
-//              String [] mas =  setSkill.split(",");
-//            for (int i = 0; i <mas.length ; i++) {
-//
-//                skils.add(new Skill(id,mas[i]));
-//            }
+           Skill a = skillRepository.getById(id);
+           skils.add(a);
 
-             developers.add(new Developer(id,name,specialty,skils,accountRepository.getById(id),skils));
+
+             developers.add(new Developer(id,name,specialty,accountRepository.getById(id),skils));
              }
 
 

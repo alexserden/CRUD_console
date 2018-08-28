@@ -14,7 +14,7 @@ public class DeveloperController {
         developerRepository = new JavaIODeveloperRepositoryImpl();
     }
 
-    public Developer create(Developer developer) {
+    public Developer create(Developer developer) throws IOException {
         return developerRepository.create(developer);
     }
 
