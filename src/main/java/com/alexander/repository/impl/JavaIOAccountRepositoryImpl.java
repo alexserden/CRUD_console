@@ -4,6 +4,7 @@ import com.alexander.model.Account;
 import com.alexander.repository.AccountRepository;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,7 +58,9 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public void clearAll() {
-
+    public void clearAll() throws IOException {
+        BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
+        bufferedWriter.write("");
+        bufferedWriter.close();
     }
 }

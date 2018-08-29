@@ -15,5 +15,5 @@ public interface SkillRepository extends GenericRepository<Skill,Long> {
 
     List<Skill> getAll() throws IOException;
 
-    void clearAll();
+    void clearAll() throws IOException;
 }

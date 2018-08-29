@@ -34,7 +34,7 @@ public class SkillsController {
     }
 
 
-    public void clearAll() {
+    public void clearAll() throws IOException {
         skillRepository.clearAll();
     }
 }

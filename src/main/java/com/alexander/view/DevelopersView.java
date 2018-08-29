@@ -1,43 +1,77 @@
 package com.alexander.view;
 
-import com.alexander.controller.AccountController;
 import com.alexander.controller.DeveloperController;
-import com.alexander.controller.SkillsController;
 import com.alexander.model.Account;
 import com.alexander.model.Developer;
 import com.alexander.model.Skill;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DevelopersView {
     DeveloperController developerController = new DeveloperController();
-
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    Long id = 0L;
+    String name;
+    String specialty;
+    Account account;
+    Set<Skill>skills =  new HashSet<Skill>();
 
     public DevelopersView() throws IOException {
     }
 
-    public void show() throws IOException {
+    public void addDeveloper() throws IOException {
 
-        List<Developer> list = developerController.getAll();
+        System.out.println("Введите id разработчика");
+        try {
+            id = Long.parseLong(bufferedReader.readLine());
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите name разработчика");
+        try {
+            name = bufferedReader.readLine();
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите specialty разработчика");
+        try {
+            specialty = bufferedReader.readLine();
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите account разработчика");
+        try {
+            account = new Account(id,bufferedReader.readLine());
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите skills разработчика через запятую");
+
+        skills.add(new Skill(id,bufferedReader.readLine()));
+
+       developerController.create(new Developer(id,name,specialty,account,skills));
+    }
+
+    public void showAll() throws IOException {
+
+        List<Developer> developerList = developerController.getAll();
 
         System.out.println("---------------------------------------------------------------");
         System.out.println("ID    NAME        Cpecialty              Account         Skills  ");
 
-        Set<Skill> sl = new HashSet<>();
-        sl.add(new Skill(2L,"Pascal"));
-        developerController.create(new Developer(2l,"Vova","PhpDeveloper",new Account(2L,"vovan@"),sl));
-        for (Developer dev : list) {
 
-
-            System.out.printf("%-6s", dev.getId());
-            System.out.printf("%-11s", dev.getName());
-            System.out.printf("%-24s", dev.getSpecialty());
-            System.out.printf("%-19s", dev.getAccount().getAccount());
-            for (Skill skill : dev.getSkill()) {
+        for (Developer developer : developerList) {
+            System.out.printf("%-6s", developer.getId());
+            System.out.printf("%-11s", developer.getName());
+            System.out.printf("%-24s", developer.getSpecialty());
+            System.out.printf("%-19s", developer.getAccount().getAccount());
+            for (Skill skill : developer.getSkill()) {
                 System.out.print(skill.getSkill() + " ");
 
             }
@@ -46,5 +80,8 @@ public class DevelopersView {
 
         }
 
+    }
+    public void clearDeveloper() throws IOException {
+        developerController.clearAll();
     }
 }

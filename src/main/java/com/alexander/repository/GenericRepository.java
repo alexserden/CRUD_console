@@ -12,6 +12,6 @@ public interface GenericRepository<T, ID> {
 
     List<T> getAll() throws IOException;
 
-    void clearAll();
+    void clearAll() throws IOException;
 
 }

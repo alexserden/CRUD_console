@@ -34,7 +34,7 @@ public class DeveloperController {
     }
 
 
-    public void clearAll() {
+    public void clearAll() throws IOException {
         developerRepository.clearAll();
     }
 }

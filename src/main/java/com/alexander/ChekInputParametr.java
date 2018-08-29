@@ -8,8 +8,8 @@ import java.io.IOException;
 
 public class ChekInputParametr {
     DevelopersView developersView = new DevelopersView();
-//    AccountsView accountsView = new AccountsView();
-//    SkillsView skillsView = new SkillsView();
+    AccountsView accountsView = new AccountsView();
+    SkillsView skillsView = new SkillsView();
 
     public ChekInputParametr() throws IOException {
     }
@@ -17,8 +17,17 @@ public class ChekInputParametr {
     public void showAll(String[] args) throws IOException {
         switch (args[0]) {
             case "showAll":
-              //  showAll.getAll();
-                developersView.show();
+//                developersView.addDeveloper();
+//                developersView.showAll();
+//                skillsView.clearSkills();
+//                skillsView.showSkills();
+//                accountsView.showAccounts();
+//                skillsView.clearSkills();
+                developersView.showAll();
+                accountsView.showAccounts();
+                skillsView.showSkills();
+                System.out.println("---------------------------------------------------");
+                 developersView.clearDeveloper();
 
 
 

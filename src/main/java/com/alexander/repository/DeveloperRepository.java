@@ -14,5 +14,5 @@ public interface DeveloperRepository extends GenericRepository<Developer,Long>{
 
     List<Developer> getAll() throws IOException;
 
-    void clearAll();
+    void clearAll() throws IOException;
 }

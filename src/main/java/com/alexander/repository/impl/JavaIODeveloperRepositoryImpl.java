@@ -74,9 +74,7 @@ return null;
              specialty = temp[2];
            Skill a = skillRepository.getById(id);
            skils.add(a);
-
-
-             developers.add(new Developer(id,name,specialty,accountRepository.getById(id),skils));
+           developers.add(new Developer(id,name,specialty,accountRepository.getById(id),skils));
              }
 
 
@@ -89,7 +87,9 @@ return null;
 
 
     @Override
-    public void clearAll() {
-
+    public void clearAll() throws IOException {
+        BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
+        bufferedWriter.write("");
+        bufferedWriter.close();
     }
 }

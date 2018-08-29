@@ -14,5 +14,5 @@ public interface AccountRepository extends GenericRepository<Account,Long>{
 
     List<Account> getAll() throws IOException;
 
-    void clearAll();
+    void clearAll() throws IOException;
 }

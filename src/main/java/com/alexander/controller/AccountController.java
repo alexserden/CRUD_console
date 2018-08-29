@@ -34,7 +34,7 @@ public class AccountController {
     }
 
 
-    public void clearAll() {
+    public void clearAll() throws IOException {
         accountRepository.clearAll();
     }
 }
