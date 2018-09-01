@@ -1,5 +1,7 @@
 package com.alexander.repository.impl;
 
+import com.alexander.controller.AccountController;
+import com.alexander.controller.SkillsController;
 import com.alexander.model.Developer;
 import com.alexander.model.Skill;
 import com.alexander.repository.AccountRepository;
@@ -20,39 +22,83 @@ import java.util.List;
 import java.util.Set;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
-    AccountRepository accountRepository;
-    SkillRepository skillRepository;
+    AccountController accountRepository;
+    SkillsController skillRepository;
     BufferedReader bufferedReader;
-    List<Developer> developers;
     Path paths = Paths.get("src/main/resource/developers.txt");
-
     private Long countId = 0L;
-    public JavaIODeveloperRepositoryImpl() throws IOException {
-         accountRepository = new JavaIOAccountRepositoryImpl();
-         skillRepository = new JavaIOSkillsRepositoryImpl();
-        bufferedReader  = Files.newBufferedReader(paths);
 
-        developers = new ArrayList<>();
+    public JavaIODeveloperRepositoryImpl() throws IOException {
+        accountRepository = new AccountController();
+        skillRepository = new SkillsController();
+        List<Developer> list = getAll();
+        for (Developer developer : list) {
+            if (developer.getId() > countId) {
+                countId = developer.getId();
+            }
+        }
+
     }
 
     @Override
     public Developer create(Developer developer) throws IOException {
 
-        String text = "\n"+developer.getId()+" "+developer.getName()+" "+developer.getSpecialty();
-        Files.write(paths,text.getBytes(),StandardOpenOption.APPEND);
+        String text = "\n" + (++countId) + " " + developer.getName() + " " + developer.getSpecialty();
+        Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
         accountRepository.create(developer.getAccount());
         String skill = "";
         for (Skill s : developer.getSkill()) {
             skill = s.getSkill() + skill;
         }
-        skillRepository.create(new Skill(developer.getId(),skill));
-return null;
+        skillRepository.create(new Skill(developer.getId(), skill));
+        return null;
     }
+    @Override
+    public void update(Developer developer) throws IOException {
+         List<Developer> developersList = getAll();
+        for (Developer d : developersList) {
+            if(d.getId()==developer.getId()){
+                d.setName(developer.getName());
+                d.setSpecialty(developer.getSpecialty());
+                d.setAccount(developer.getAccount());
+                d.setSkill(developer.getSkill());
+            }
+        }
+        BufferedWriter writer = Files.newBufferedWriter(paths);
+            for (Developer dev : developersList) {
+                writer.write(dev + "");
+                writer.newLine();
+            }
+      }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws IOException {
+        List<Developer> newDevelopers = new ArrayList<>();
+        List<Developer> developers = getAll();
+        BufferedWriter writer = Files.newBufferedWriter(paths);
 
+        try {
+
+            for (Developer d : developers) {
+                if (d.getId() != id) {
+                    newDevelopers.add(d);
+                }
+            }
+            for (Developer d : newDevelopers) {
+
+                writer.write(d.getId() + " " + d.getName() + " " + d.getSpecialty()+"");
+                writer.newLine();
+            }
+            writer.close();
+
+            accountRepository.delete(id);
+            skillRepository.delete(id);
+        } catch (IOException e) {
+
+        }
     }
+
+
 
     @Override
     public Developer getById(Long id) {
@@ -61,29 +107,26 @@ return null;
 
     @Override
     public List<Developer> getAll() throws IOException {
+        List<Developer> developers = new ArrayList<>();
+        bufferedReader = Files.newBufferedReader(paths);
         Long id;
         String name;
         String specialty;
 
-        while(bufferedReader.ready()){
-            Set<Skill>  skils = new HashSet<>();
+        while (bufferedReader.ready()) {
+            Set<Skill> skils = new HashSet<>();
             String s = bufferedReader.readLine();
-            String [] temp = s.split(" ");
-             id = Long.valueOf(temp[0]);
-             name = temp[1];
-             specialty = temp[2];
-           Skill a = skillRepository.getById(id);
-           skils.add(a);
-           developers.add(new Developer(id,name,specialty,accountRepository.getById(id),skils));
-             }
-
-
-
-
-
-
-        return developers;
+            String[] temp = s.split(" ");
+            id = Long.parseLong(temp[0]);
+            name = temp[1];
+            specialty = temp[2];
+            Skill a = skillRepository.getById(id);
+            skils.add(a);
+            developers.add(new Developer(id, name, specialty, accountRepository.getById(id), skils));
         }
+        bufferedReader.close();
+        return developers;
+    }
 
 
     @Override
@@ -91,5 +134,7 @@ return null;
         BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
         bufferedWriter.write("");
         bufferedWriter.close();
+        accountRepository.clearAll();
+        skillRepository.clearAll();
     }
 }

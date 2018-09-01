@@ -6,7 +6,6 @@ import com.alexander.repository.SkillRepository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,45 +17,89 @@ import java.util.List;
 public class JavaIOSkillsRepositoryImpl implements SkillRepository {
     Path paths = Paths.get("src/main/resource/skills.txt");
 
-    List<Skill> skills;
-     BufferedReader bufferedReader;
-     private Long countId = 0L;
+    private static Long countId = 0L;
+
     public JavaIOSkillsRepositoryImpl() throws IOException {
-        skills = new ArrayList<>();
-        bufferedReader = Files.newBufferedReader(paths);
+        try {
+            List<Skill> addId = getAll();
+
+            for (Skill skill : addId) {
+                if (skill.getId() > countId) {
+                    countId = skill.getId();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Skill create(Skill skill) throws IOException {
-        String text = "\n"+skill.getSkill();
-        Files.write(paths,text.getBytes(),StandardOpenOption.APPEND);
+
+        String text = "\n" +(++countId)+ " " + skill.getSkill();
+        Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
         return null;
+    }
+    @Override
+    public void update(Skill skill) throws IOException {
+
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws IOException {
+        List<Skill> newSkills = new ArrayList<>();
+        List<Skill> skills = getAll();
+        BufferedWriter writer = Files.newBufferedWriter(paths);
 
-    }
+
+
+        for (Skill s : skills) {
+            if (s.getId() != id) {
+                newSkills.add(s);
+            }
+        }
+        for(Skill s : newSkills){
+            writer.write(s.getId()+" "+s.getSkill());
+            writer.newLine();
+        }
+        writer.close();
+        }
+
 
     @Override
     public Skill getById(Long id) throws IOException {
+        List<Skill> sk = getAll();
 
-        for (Skill s :  getAll()) {
-            if(s.getId()==id) return s;
+        for (Skill s : sk) {
+            if (s.getId() == id) return s;
         }
         return null;
     }
 
     @Override
     public List<Skill> getAll() throws IOException {
+        List<Skill> skills = new ArrayList<>();
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
 
-        while(bufferedReader.ready()){
-              String s = bufferedReader.readLine();
-            skills.add(new Skill(++countId,s));
+
+        while (bufferedReader.ready()) {
+            String[] sk = bufferedReader.readLine().split(" ");
+            skills.add(new Skill(Long.parseLong(sk[0]),sk[1]));
         }
+        bufferedReader.close();
         return skills;
-    }
 
+    }
+    private Skill getByName(Skill name) throws IOException {
+        List<Skill> data = getAll();
+
+        for (Skill skill : data) {
+            if (skill.getSkill().equals(name)) {
+                return skill;
+            }
+        }
+        return null;
+    }
     @Override
     public void clearAll() throws IOException {
         BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
@@ -64,4 +107,5 @@ public class JavaIOSkillsRepositoryImpl implements SkillRepository {
         bufferedWriter.close();
 
     }
+
 }

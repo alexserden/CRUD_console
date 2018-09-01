@@ -23,12 +23,14 @@ public class ChekInputParametr {
 //                skillsView.showSkills();
 //                accountsView.showAccounts();
 //                skillsView.clearSkills();
-                developersView.showAll();
-                accountsView.showAccounts();
-                skillsView.showSkills();
-                System.out.println("---------------------------------------------------");
-                 developersView.clearDeveloper();
+//                developersView.showAll();
+//                accountsView.showAccounts();
+//                skillsView.showSkills();
+//                System.out.println("---------------------------------------------------");
 
+                developersView.updateDeveloper();
+
+                developersView.showAll();
 
 
 

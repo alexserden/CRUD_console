@@ -15,45 +15,73 @@ import java.util.List;
 
 public class JavaIOAccountRepositoryImpl implements AccountRepository {
     Path paths = Paths.get("src/main/resource/accounts.txt");
-
-    BufferedReader bufferedReader;
-    private Long countId  = 1L;
-    List<Account> accounts;
+    private static Long countId = 0L;
 
     public JavaIOAccountRepositoryImpl() throws IOException {
-        accounts = new ArrayList<>();
-        bufferedReader = Files.newBufferedReader(paths);
+        List<Account> addId = getAll();
+        for (Account account : addId) {
+            if (account.getId() > countId) {
+                countId = account.getId();
+            }
+        }
+
     }
+
+
 
     @Override
     public Account create(Account account) throws IOException {
-            String text = "\n"+account.getAccount();
-        Files.write(paths,text.getBytes(),StandardOpenOption.APPEND);
-          return null;
+          //  Account ac = getByName(account.getAccount());
+
+        String text = "\n"+ (++countId)+" "+ account.getAccount();
+        Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
+        return null;
+    }
+    @Override
+    public void update(Account account) throws IOException {
+
     }
 
-    @Override
-    public void delete(Long id) {
 
+    @Override
+    public void delete(Long id) throws IOException {
+        List<Account> newAccounts = new ArrayList<>();
+        List<Account> accounts = getAll();
+        BufferedWriter writer = Files.newBufferedWriter(paths);
+
+        for (Account a : accounts) {
+            if (a.getId() != id) newAccounts.add(a);
+        }
+        for (Account a : newAccounts) {
+            writer.write(a.getId()+" "+a.getAccount());
+            writer.newLine();
+        }
+        writer.close();
     }
 
     @Override
     public Account getById(Long id) throws IOException {
-
-        for (Account a : getAll()) {
-            if (a.getId()==id) return a;
+        List<Account> accounts = new ArrayList<>(getAll());
+        for (Account a : accounts) {
+            if (a.getId() == id) return a;
         }
+
         return null;
     }
 
     @Override
     public List<Account> getAll() throws IOException {
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
+        List<Account> accounts = new ArrayList<>();
 
+        while (bufferedReader.ready()) {
 
-        while(bufferedReader.ready()){
-            String account = bufferedReader.readLine();
-            accounts.add(new Account(countId++,account));
+            String[] account = bufferedReader.readLine().split(" ");
+
+            accounts.add(new Account(Long.parseLong(account[0]), account[1]));
         }
+
+        bufferedReader.close();
         return accounts;
     }
 
@@ -62,5 +90,15 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
         BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
         bufferedWriter.write("");
         bufferedWriter.close();
+    }
+    private Account getByName(String name) throws IOException {
+        List<Account> list = getAll();
+
+        for (Account account : list) {
+            if (account.getAccount().equals(name)) {
+                return account;
+            }
+        }
+        return null;
     }
 }

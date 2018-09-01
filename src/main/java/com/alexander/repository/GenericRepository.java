@@ -6,7 +6,9 @@ import java.util.List;
 public interface GenericRepository<T, ID> {
     T create(T t) throws IOException;
 
-    void delete(ID id);
+    void update(T t) throws IOException;
+
+    void delete(ID id) throws IOException;
 
     T getById(ID id) throws IOException;
 

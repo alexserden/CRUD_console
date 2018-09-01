@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class DeveloperController {
-   static DeveloperRepository developerRepository;
+    static DeveloperRepository developerRepository;
 
     public DeveloperController() throws IOException {
         developerRepository = new JavaIODeveloperRepositoryImpl();
@@ -18,8 +18,13 @@ public class DeveloperController {
         return developerRepository.create(developer);
     }
 
+    public void update(Developer developer) throws IOException {
 
-    public void delete(Long id) {
+        developerRepository.update(developer);
+
+    }
+
+    public void delete(Long id) throws IOException {
         developerRepository.delete(id);
     }
 

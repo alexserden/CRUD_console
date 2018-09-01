@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.util.List;
 
 
-public interface SkillRepository extends GenericRepository<Skill,Long> {
+public interface SkillRepository extends GenericRepository<Skill, Long> {
     Skill create(Skill t) throws IOException;
 
-    void delete(Long id);
+    void update(Skill skill) throws IOException;
+
+    void delete(Long id) throws IOException;
 
     Skill getById(Long id) throws IOException;
 

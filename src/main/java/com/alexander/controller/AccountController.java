@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AccountController {
-    AccountRepository  accountRepository;
+    AccountRepository accountRepository;
 
     public AccountController() throws IOException {
         accountRepository = new JavaIOAccountRepositoryImpl();
@@ -18,8 +18,13 @@ public class AccountController {
         return accountRepository.create(account);
     }
 
+    public void update(Account account) throws IOException {
 
-    public void delete(Long id) {
+        accountRepository.update(account);
+
+    }
+
+    public void delete(Long id) throws IOException {
         accountRepository.delete(id);
     }
 

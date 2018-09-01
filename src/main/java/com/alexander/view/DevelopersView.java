@@ -27,12 +27,7 @@ public class DevelopersView {
 
     public void addDeveloper() throws IOException {
 
-        System.out.println("Введите id разработчика");
-        try {
-            id = Long.parseLong(bufferedReader.readLine());
-        } catch (IOException e) {
-            System.out.println("неправильный ввод");
-        }
+
         System.out.println("Введите name разработчика");
         try {
             name = bufferedReader.readLine();
@@ -58,6 +53,33 @@ public class DevelopersView {
        developerController.create(new Developer(id,name,specialty,account,skills));
     }
 
+    public void updateDeveloper() throws IOException {
+
+
+        System.out.println("Введите name разработчика");
+        try {
+            name = bufferedReader.readLine();
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите specialty разработчика");
+        try {
+            specialty = bufferedReader.readLine();
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите account разработчика");
+        try {
+            account = new Account(id,bufferedReader.readLine());
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
+        System.out.println("Введите skills разработчика через запятую");
+
+        skills.add(new Skill(id,bufferedReader.readLine()));
+
+        developerController.update(new Developer(id,name,specialty,account,skills));
+    }
     public void showAll() throws IOException {
 
         List<Developer> developerList = developerController.getAll();
@@ -70,7 +92,7 @@ public class DevelopersView {
             System.out.printf("%-6s", developer.getId());
             System.out.printf("%-11s", developer.getName());
             System.out.printf("%-24s", developer.getSpecialty());
-            System.out.printf("%-19s", developer.getAccount().getAccount());
+            System.out.printf("%-19s",developer.getAccount().getAccount());
             for (Skill skill : developer.getSkill()) {
                 System.out.print(skill.getSkill() + " ");
 
@@ -83,5 +105,9 @@ public class DevelopersView {
     }
     public void clearDeveloper() throws IOException {
         developerController.clearAll();
+    }
+    public void delete() throws IOException {
+        System.out.println("Введите ID пользователя которого хотите удалить");
+        developerController.delete(Long.valueOf(bufferedReader.readLine()));
     }
 }

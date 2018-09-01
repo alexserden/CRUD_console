@@ -1,7 +1,6 @@
 package com.alexander.controller;
 
 import com.alexander.model.Skill;
-import com.alexander.repository.DeveloperRepository;
 import com.alexander.repository.SkillRepository;
 import com.alexander.repository.impl.JavaIOSkillsRepositoryImpl;
 
@@ -18,8 +17,12 @@ public class SkillsController {
         return skillRepository.create(skill);
     }
 
+    public void update(Skill skill) throws IOException {
 
-    public void delete(Long id) {
+        skillRepository.update(skill);
+
+    }
+    public void delete(Long id) throws IOException {
         skillRepository.delete(id);
     }
 
