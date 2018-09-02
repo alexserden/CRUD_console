@@ -89,9 +89,9 @@ public class DevelopersView {
 
         List<Developer> developerList = developerController.getAll();
 
-        System.out.println("---------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------");
         System.out.println("ID    NAME       Cpecialty              Account         Skills  ");
-
+        System.out.println("--------------------------------------------------------------------");
 
         for (Developer developer : developerList) {
             System.out.printf("%-6s", developer.getId());
@@ -99,16 +99,12 @@ public class DevelopersView {
             System.out.printf("%-23s", developer.getSpecialty());
             System.out.printf("%-16s",developer.getAccount().getAccount());
             for (Skill skill : developer.getSkill()) {
-                System.out.print(skill.getSkill() + " ");
-
-            }
-
+                System.out.print(skill.getSkill());
+                }
             System.out.println();
-
-        }
-
+            System.out.println("--------------------------------------------------------------------");
+            }
     }
-
     public void delete() throws IOException {
         System.out.println("Введите ID пользователя которого хотите удалить");
         developerController.delete(Long.valueOf(bufferedReader.readLine()));

@@ -14,26 +14,31 @@ public class ChekInputParametr {
     public ChekInputParametr() throws IOException {
     }
 
-    public void showAll(String[] args) throws IOException {
-        switch (args[0]) {
+    public void showAll(String args) throws IOException {
+        switch (args) {
             case "showAll":
                 developersView.showAll();
+                break;
             case "showAccounts":
                 accountsView.showAccounts();
+                break;
             case "showSkills":
                 skillsView.showSkills();
-        }
-        switch (args[1]) {
+                break;
             case "delete":
                 developersView.delete();
                 developersView.showAll();
+                break;
             case "update":
                 developersView.updateDeveloper();
                 developersView.showAll();
+                break;
             case "add":
                 developersView.addDeveloper();
                 developersView.showAll();
+                break;
         }
+
 
 
 
