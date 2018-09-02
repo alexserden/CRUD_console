@@ -42,9 +42,9 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     @Override
     public void create(Developer developer) throws IOException {
 
-        String text = "\n" + (++countId) + " " + developer.getName() + " " + developer.getSpecialty();
-        Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
-        accountRepository.create(developer.getAccount());
+        String text = "\n" + (++countId) + " " + developer.getName() + " " + developer.getSpecialty();              // создаем text который будем записывать в файл
+        Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);                                             // переобразовываем text в байты и записываем в конец файла developers
+        accountRepository.create(developer.getAccount());                                                           // вызываем методы create для остальных классов JavaIOAccountsRepositoryImpl, JavaIOSkillsRepositoryImpl
         String skill = "";
         for (Skill s : developer.getSkill()) {
             skill = s.getSkill() + skill;
