@@ -15,26 +15,25 @@ public class ChekInputParametr {
     }
 
     public void showAll(String[] args) throws IOException {
-//        switch (args[0]) {
-//                case "showAll":
-//                    developersView.showAll();
-//                case "showAccounts":
-//                    accountsView.showAccounts();
-//                case "showSkills":
-//                    skillsView.showSkills();
-//                    }
-//                    switch (args[1]) {
-//                        case "delete":
-//                            developersView.delete();
-//                            developersView.showAll();
-//                        case "update":
-//                            developersView.updateDeveloper();
-//                            developersView.showAll();
-//                        case "add":
-//                            developersView.addDeveloper();
-//                            developersView.showAll();
-//                    }
-        developersView.addDeveloper();
-developersView.showAll();
+        switch (args[0]) {
+            case "showAll":
+                developersView.showAll();
+            case "showAccounts":
+                accountsView.showAccounts();
+            case "showSkills":
+                skillsView.showSkills();
+        }
+        switch (args[1]) {
+            case "delete":
+                developersView.delete();
+                developersView.showAll();
+            case "update":
+                developersView.updateDeveloper();
+                developersView.showAll();
+            case "add":
+                developersView.addDeveloper();
+                developersView.showAll();
+        }
+
     }
 }
