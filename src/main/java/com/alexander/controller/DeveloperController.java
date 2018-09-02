@@ -29,7 +29,7 @@ public class DeveloperController {
     }
 
 
-    public Developer getById(Long id) {
+    public Developer getById(Long id) throws IOException {
         return developerRepository.getById(id);
     }
 
