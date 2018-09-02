@@ -2,6 +2,7 @@ package com.alexander.repository.impl;
 
 import com.alexander.controller.AccountController;
 import com.alexander.controller.SkillsController;
+import com.alexander.model.Account;
 import com.alexander.model.Developer;
 import com.alexander.model.Skill;
 import com.alexander.repository.DeveloperRepository;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     AccountController accountRepository;
     SkillsController skillRepository;
-    BufferedReader bufferedReader;
+
     Path paths = Paths.get("src/main/resource/developers.txt");
     private Long countId = 0L;
 
@@ -107,27 +108,27 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     @Override
     public List<Developer> getAll() throws IOException {
         List<Developer> developers = new ArrayList<>();
-        bufferedReader = Files.newBufferedReader(paths);
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
         Long id;
         String name;
         String specialty;
 
         while (bufferedReader.ready()) {
             Set<Skill> skils = new HashSet<>();
-            String s = bufferedReader.readLine();
-            String[] temp = s.split(" ");
+            String s = bufferedReader.readLine();  //читаем с файла построчно
+            String[] temp = s.split(" ");   //разбиваем строку с помощью регулярки
             id = Long.parseLong(temp[0]);
             name = temp[1];
             specialty = temp[2];
-            Skill a = skillRepository.getById(id);
-            String [] sk = a.getSkill().split(",");
-            for (int i = 0; i <sk.length ; i++) {
-                skils.add(a);
+           Account account = accountRepository.getById(id);    //// по id находим соответствующий Account разработчика
+            Skill a = skillRepository.getById(id);            // по id находим соответствующие Skills разработчика
+            String [] sk = a.getSkill().split(",");     // рабиваем его с помощью регулярки
+            for (int i = 0; i <sk.length ; i++) {              // и добавляем в HashSet
+                skils.add(new Skill(id,sk[i]));
             }
-
-            developers.add(new Developer(id, name, specialty, accountRepository.getById(id), skils));
-        }
-        bufferedReader.close();
+            developers.add(new Developer(id, name, specialty, account, skils));    //добавляем в список developers
+        }                                                                          // созданного разработчика
+        bufferedReader.close();                                                    // закрываем поток для чтения
         return developers;
     }
 

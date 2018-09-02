@@ -1,5 +1,6 @@
-1 Jerry JavaDeveloper
+1 Lui QADeveloper
 2 Jonn PhpDeveloper
 3 Smit C++Developer
 4 Gena PascalDeveloper
 5 Roma NetDeveloper
+6 Roma F#Developer

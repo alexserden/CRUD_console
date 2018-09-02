@@ -99,7 +99,7 @@ public class DevelopersView {
             System.out.printf("%-23s", developer.getSpecialty());
             System.out.printf("%-16s",developer.getAccount().getAccount());
             for (Skill skill : developer.getSkill()) {
-                System.out.print(skill.getSkill());
+                System.out.print(skill.getSkill()+" ");
                 }
             System.out.println();
             System.out.println("--------------------------------------------------------------------");
