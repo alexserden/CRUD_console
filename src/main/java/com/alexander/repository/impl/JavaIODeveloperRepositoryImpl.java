@@ -54,25 +54,25 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     }
     @Override
     public void update(Developer developer) throws IOException {
-         List<Developer> developersList = getAll();
-        for (Developer d : developersList) {
-            if(d.getId()==developer.getId()){
-                d.setName(developer.getName());
-                d.setSpecialty(developer.getSpecialty());
-                accountRepository.update(developer.getAccount());
+         List<Developer> developersList = getAll();                                             // получаем все разработчиков
+        for (Developer d : developersList) {                                                    // проходимся по списку
+            if(d.getId()==developer.getId()){                                                   // если есть совпадающие айди
+                d.setName(developer.getName());                                                 // с помощью метода set меняем значения
+                d.setSpecialty(developer.getSpecialty());                                       // вызываем метод  update для класса JavaIOAccountsRepositoryImpl
+                accountRepository.update(developer.getAccount());                               // вызываем метод  update для класса JavaIOSkillsRepositoryImpl
                 skillRepository.update(developer.getSkill());
             }
         }
-        BufferedWriter writer = Files.newBufferedWriter(paths);
-            for (Developer dev : developersList) {
-                writer.write(dev.getId()+" "+dev.getName()+" "+ dev.getSpecialty());
-                writer.newLine();
+        BufferedWriter writer = Files.newBufferedWriter(paths);                                     // создаем поток для записи в файл
+            for (Developer dev : developersList) {                                                  // проходимся по списку
+                writer.write(dev.getId()+" "+dev.getName()+" "+ dev.getSpecialty());            // записываем данные в файл developers
+                writer.newLine();                                                                   // переходим на следующую строчку в файле
             }
-            writer.close();
+            writer.close();                                                                         // закрываем поток во избежания утечки информации
       }
 
     @Override
-    public void delete(Long id) throws IOException {
+    public void delete(Long id) throws IOException {                    // удаление по id
         List<Developer> newDevelopers = new ArrayList<>();              // создаем два списка
         List<Developer> developers = getAll();                          //  в список  developers заносим всех разработчиков
         BufferedWriter writer = Files.newBufferedWriter(paths);         // создаем поток для записи в файл
@@ -80,7 +80,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
             for (Developer d : developers) {                            // проходимся по списку разработчиков и при не совпадении
                 if (d.getId() != id) {                                  // айди доваляем их в новый список если айди совпадают
-                    newDevelopers.add(d);                             //соответственно разработчик не попадает в новый список и теряется
+                    newDevelopers.add(d);                               //соответственно разработчик не попадает в новый список и теряется
                 }
             }
             for (Developer d : newDevelopers) {                             //  проходимся по новому списку разработчиков
