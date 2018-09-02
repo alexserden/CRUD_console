@@ -12,7 +12,7 @@ public interface DeveloperRepository extends GenericRepository<Developer, Long> 
 
     void update(Developer developer) throws IOException;
 
-    Developer getById(Long id);
+    Developer getById(Long id) throws IOException;
 
     List<Developer> getAll() throws IOException;
 

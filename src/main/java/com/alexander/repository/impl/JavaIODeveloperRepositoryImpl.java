@@ -73,35 +73,39 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public void delete(Long id) throws IOException {
-        List<Developer> newDevelopers = new ArrayList<>();
-        List<Developer> developers = getAll();
-        BufferedWriter writer = Files.newBufferedWriter(paths);
-
+        List<Developer> newDevelopers = new ArrayList<>();              // создаем два списка
+        List<Developer> developers = getAll();                          //  в список  developers заносим всех разработчиков
+        BufferedWriter writer = Files.newBufferedWriter(paths);         // создаем поток для записи в файл
         try {
 
-            for (Developer d : developers) {
-                if (d.getId() != id) {
-                    newDevelopers.add(d);
+            for (Developer d : developers) {                            // проходимся по списку разработчиков и при не совпадении
+                if (d.getId() != id) {                                  // айди доваляем их в новый список если айди совпадают
+                    newDevelopers.add(d);                             //соответственно разработчик не попадает в новый список и теряется
                 }
             }
-            for (Developer d : newDevelopers) {
+            for (Developer d : newDevelopers) {                             //  проходимся по новому списку разработчиков
 
-                writer.write(d.getId() + " " + d.getName() + " " + d.getSpecialty()+"");
-                writer.newLine();
+                writer.write(d.getId() + " " + d.getName() + " " + d.getSpecialty()+"");   // пишем в файл developers первые три значения остальные
+                writer.newLine();                                                               // переходим на новую строку
             }
-            writer.close();
+            writer.close();                                                                     // закрываем файл воизбежания утечки информации
 
-            accountRepository.delete(id);
-            skillRepository.delete(id);
+            accountRepository.delete(id);                                                       // вызываем метод  delete для класса JavaIOAccountRepositoryImpl
+            skillRepository.delete(id);                                                         // вызываем метод  delete для класса JavaIOSkillsRepositoryImpl
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
 
 
     @Override
-    public Developer getById(Long id) {
+    public Developer getById(Long id) throws IOException {
+        List<Developer> developers = new ArrayList<>(getAll());         // создаем список и добавляем в него всех разработчиков
+        for (Developer d : developers) {                                // проходимся по списку сравнивая id
+            if (d.getId() == id) return d;                              // при совпадении возвращаем разработчика
+        }
+
         return null;
     }
 
