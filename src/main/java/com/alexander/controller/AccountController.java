@@ -14,8 +14,8 @@ public class AccountController {
         accountRepository = new JavaIOAccountRepositoryImpl();
     }
 
-    public Account create(Account account) throws IOException {
-        return accountRepository.create(account);
+    public void create(Account account) throws IOException {
+        accountRepository.create(account);
     }
 
     public void update(Account account) throws IOException {
@@ -38,8 +38,4 @@ public class AccountController {
         return accountRepository.getAll();
     }
 
-
-    public void clearAll() throws IOException {
-        accountRepository.clearAll();
-    }
 }

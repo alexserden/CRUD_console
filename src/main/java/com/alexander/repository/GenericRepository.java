@@ -2,9 +2,10 @@ package com.alexander.repository;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface GenericRepository<T, ID> {
-    T create(T t) throws IOException;
+    void create(T t) throws IOException;
 
     void update(T t) throws IOException;
 
@@ -14,6 +15,5 @@ public interface GenericRepository<T, ID> {
 
     List<T> getAll() throws IOException;
 
-    void clearAll() throws IOException;
 
 }

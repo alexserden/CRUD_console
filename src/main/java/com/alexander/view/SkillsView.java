@@ -23,8 +23,5 @@ public class SkillsView {
             }
 
         }
-        public void clearSkills() throws IOException {
-           skillsController.clearAll();
-        }
     }
 

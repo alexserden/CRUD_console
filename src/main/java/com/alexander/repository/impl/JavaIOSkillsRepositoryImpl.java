@@ -13,8 +13,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class JavaIOSkillsRepositoryImpl implements SkillRepository {
+public  class JavaIOSkillsRepositoryImpl implements SkillRepository {
     Path paths = Paths.get("src/main/resource/skills.txt");
 
     private static Long countId = 0L;
@@ -34,15 +35,38 @@ public class JavaIOSkillsRepositoryImpl implements SkillRepository {
     }
 
     @Override
-    public Skill create(Skill skill) throws IOException {
+    public void create(Skill skill) throws IOException {
 
         String text = "\n" +(++countId)+ " " + skill.getSkill();
         Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
-        return null;
     }
+
+
+
     @Override
     public void update(Skill skill) throws IOException {
 
+    }
+
+
+    @Override
+   public void update(Set<Skill> skill) throws IOException
+    {
+        List<Skill> skills = getAll();
+        for(Skill sk : skill) {
+            for (Skill acc : skills) {
+                if (sk.getId().equals(acc.getId())) {
+                    acc.setSkill(sk.getSkill());
+
+                }
+            }
+        }
+        BufferedWriter writer = Files.newBufferedWriter(paths);
+        for (Skill s : skills) {
+            writer.write(s.getId()+" "+s.getSkill());
+            writer.newLine();
+        }
+        writer.close();
     }
 
     @Override
@@ -100,12 +124,6 @@ public class JavaIOSkillsRepositoryImpl implements SkillRepository {
         }
         return null;
     }
-    @Override
-    public void clearAll() throws IOException {
-        BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
-        bufferedWriter.write("");
-        bufferedWriter.close();
 
-    }
 
 }

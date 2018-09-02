@@ -54,8 +54,13 @@ public class DevelopersView {
     }
 
     public void updateDeveloper() throws IOException {
-
-
+        Long id = 0L;
+        System.out.println("Введите Id разработчика, которого нужно редактировать ");
+        try {
+           id = Long.parseLong(bufferedReader.readLine());
+        } catch (IOException e) {
+            System.out.println("неправильный ввод");
+        }
         System.out.println("Введите name разработчика");
         try {
             name = bufferedReader.readLine();
@@ -85,14 +90,14 @@ public class DevelopersView {
         List<Developer> developerList = developerController.getAll();
 
         System.out.println("---------------------------------------------------------------");
-        System.out.println("ID    NAME        Cpecialty              Account         Skills  ");
+        System.out.println("ID    NAME       Cpecialty              Account         Skills  ");
 
 
         for (Developer developer : developerList) {
             System.out.printf("%-6s", developer.getId());
             System.out.printf("%-11s", developer.getName());
-            System.out.printf("%-24s", developer.getSpecialty());
-            System.out.printf("%-19s",developer.getAccount().getAccount());
+            System.out.printf("%-23s", developer.getSpecialty());
+            System.out.printf("%-16s",developer.getAccount().getAccount());
             for (Skill skill : developer.getSkill()) {
                 System.out.print(skill.getSkill() + " ");
 
@@ -103,9 +108,7 @@ public class DevelopersView {
         }
 
     }
-    public void clearDeveloper() throws IOException {
-        developerController.clearAll();
-    }
+
     public void delete() throws IOException {
         System.out.println("Введите ID пользователя которого хотите удалить");
         developerController.delete(Long.valueOf(bufferedReader.readLine()));

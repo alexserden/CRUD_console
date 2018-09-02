@@ -14,8 +14,8 @@ public class DeveloperController {
         developerRepository = new JavaIODeveloperRepositoryImpl();
     }
 
-    public Developer create(Developer developer) throws IOException {
-        return developerRepository.create(developer);
+    public void create(Developer developer) throws IOException {
+         developerRepository.create(developer);
     }
 
     public void update(Developer developer) throws IOException {
@@ -38,8 +38,4 @@ public class DeveloperController {
         return developerRepository.getAll();
     }
 
-
-    public void clearAll() throws IOException {
-        developerRepository.clearAll();
-    }
 }

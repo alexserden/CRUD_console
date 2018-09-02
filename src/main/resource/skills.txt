@@ -1,5 +1,5 @@
-1 Java
-2 Maven
-3 C++
+1 Java,Sql,Java
+2 Maven,Tomcat
+3 C++,Fox
 4 Sql
 5 Delphi

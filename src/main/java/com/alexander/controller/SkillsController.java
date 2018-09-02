@@ -6,6 +6,7 @@ import com.alexander.repository.impl.JavaIOSkillsRepositoryImpl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public class SkillsController {
     SkillRepository skillRepository = new JavaIOSkillsRepositoryImpl();
@@ -13,11 +14,11 @@ public class SkillsController {
     public SkillsController() throws IOException {
     }
 
-    public Skill create(Skill skill) throws IOException {
-        return skillRepository.create(skill);
+    public void create(Skill skill) throws IOException {
+         skillRepository.create(skill);
     }
 
-    public void update(Skill skill) throws IOException {
+    public void update(Set<Skill> skill) throws IOException {
 
         skillRepository.update(skill);
 
@@ -37,7 +38,4 @@ public class SkillsController {
     }
 
 
-    public void clearAll() throws IOException {
-        skillRepository.clearAll();
-    }
 }

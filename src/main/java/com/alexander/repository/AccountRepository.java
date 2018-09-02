@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface AccountRepository extends GenericRepository<Account, Long> {
-    Account create(Account account) throws IOException;
+    void create(Account account) throws IOException;
 
     void update(Account account) throws IOException;
 
@@ -16,5 +16,4 @@ public interface AccountRepository extends GenericRepository<Account, Long> {
 
     List<Account> getAll() throws IOException;
 
-    void clearAll() throws IOException;
 }

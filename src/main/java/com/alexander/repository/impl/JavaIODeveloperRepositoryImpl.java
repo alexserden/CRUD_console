@@ -4,9 +4,7 @@ import com.alexander.controller.AccountController;
 import com.alexander.controller.SkillsController;
 import com.alexander.model.Developer;
 import com.alexander.model.Skill;
-import com.alexander.repository.AccountRepository;
 import com.alexander.repository.DeveloperRepository;
-import com.alexander.repository.SkillRepository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,7 +39,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     }
 
     @Override
-    public Developer create(Developer developer) throws IOException {
+    public void create(Developer developer) throws IOException {
 
         String text = "\n" + (++countId) + " " + developer.getName() + " " + developer.getSpecialty();
         Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
@@ -51,7 +49,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
             skill = s.getSkill() + skill;
         }
         skillRepository.create(new Skill(developer.getId(), skill));
-        return null;
+
     }
     @Override
     public void update(Developer developer) throws IOException {
@@ -60,15 +58,16 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
             if(d.getId()==developer.getId()){
                 d.setName(developer.getName());
                 d.setSpecialty(developer.getSpecialty());
-                d.setAccount(developer.getAccount());
-                d.setSkill(developer.getSkill());
+                accountRepository.update(developer.getAccount());
+                skillRepository.update(developer.getSkill());
             }
         }
         BufferedWriter writer = Files.newBufferedWriter(paths);
             for (Developer dev : developersList) {
-                writer.write(dev + "");
+                writer.write(dev.getId()+" "+dev.getName()+" "+ dev.getSpecialty());
                 writer.newLine();
             }
+            writer.close();
       }
 
     @Override
@@ -121,20 +120,15 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
             name = temp[1];
             specialty = temp[2];
             Skill a = skillRepository.getById(id);
-            skils.add(a);
+            String [] sk = a.getSkill().split(",");
+            for (int i = 0; i <sk.length ; i++) {
+                skils.add(a);
+            }
+
             developers.add(new Developer(id, name, specialty, accountRepository.getById(id), skils));
         }
         bufferedReader.close();
         return developers;
     }
 
-
-    @Override
-    public void clearAll() throws IOException {
-        BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
-        bufferedWriter.write("");
-        bufferedWriter.close();
-        accountRepository.clearAll();
-        skillRepository.clearAll();
-    }
 }

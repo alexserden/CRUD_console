@@ -30,16 +30,26 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
 
     @Override
-    public Account create(Account account) throws IOException {
-          //  Account ac = getByName(account.getAccount());
+    public void create(Account account) throws IOException {
 
         String text = "\n"+ (++countId)+" "+ account.getAccount();
         Files.write(paths, text.getBytes(), StandardOpenOption.APPEND);
-        return null;
     }
     @Override
     public void update(Account account) throws IOException {
+        List<Account> accounts = getAll();
+        for (Account acc : accounts) {
+            if (acc.getId().equals(account.getId())) {
+                acc.setAccount(account.getAccount());
 
+            }
+        }
+        BufferedWriter writer = Files.newBufferedWriter(paths);
+        for (Account account1 : accounts) {
+            writer.write(account1.getId()+" "+account1.getAccount());
+            writer.newLine();
+        }
+        writer.close();
     }
 
 
@@ -85,20 +95,4 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
         return accounts;
     }
 
-    @Override
-    public void clearAll() throws IOException {
-        BufferedWriter bufferedWriter = Files.newBufferedWriter(paths);
-        bufferedWriter.write("");
-        bufferedWriter.close();
-    }
-    private Account getByName(String name) throws IOException {
-        List<Account> list = getAll();
-
-        for (Account account : list) {
-            if (account.getAccount().equals(name)) {
-                return account;
-            }
-        }
-        return null;
-    }
 }
