@@ -15,7 +15,7 @@ public class AccountsView {
         System.out.println("------------accounts------------");
 
         for (Account account : accountController.getAll()) {
-            System.out.printf("%16s%n",account.getAccount());
+            System.out.printf("%-16s%n",account.getAccount());
         }
     }
 }

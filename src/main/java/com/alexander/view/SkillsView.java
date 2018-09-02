@@ -18,7 +18,7 @@ public class SkillsView {
         List<Skill> skillList = skillsController.getAll();
         System.out.println("------------skills------------");
         for (Skill skill : skillList) {
-                System.out.printf("%16s%n",skill.getSkill());
+                System.out.printf("%-16s%n",skill.getSkill());
 
             }
 
