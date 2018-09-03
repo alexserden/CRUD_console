@@ -52,59 +52,74 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         skillRepository.create(new Skill(developer.getId(), skill));
 
     }
+
     @Override
     public void update(Developer developer) throws IOException {
-         List<Developer> developersList = getAll();                                             // получаем все разработчиков
-        for (Developer d : developersList) {                                                    // проходимся по списку
-            if(d.getId()==developer.getId()){                                                   // если есть совпадающие айди
-                d.setName(developer.getName());                                                 // с помощью метода set меняем значения
-                d.setSpecialty(developer.getSpecialty());                                       // вызываем метод  update для класса JavaIOAccountsRepositoryImpl
-                accountRepository.update(developer.getAccount());                               // вызываем метод  update для класса JavaIOSkillsRepositoryImpl
+        List<String> list = new ArrayList<>();
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
+
+
+        while (bufferedReader.ready()) {
+            list.add(bufferedReader.readLine());
+        }
+        bufferedReader.close();
+        BufferedWriter writer = Files.newBufferedWriter(paths);
+        for (String s : list) {
+            if (Long.parseLong(s.split(" ")[0]) == developer.getId()) {
+                writer.write(developer.getId() + " " + developer.getName() + " " + developer.getSpecialty());
+                accountRepository.update(developer.getAccount());
                 skillRepository.update(developer.getSkill());
+                writer.newLine();
+            }else{
+                writer.write(s.split(" ")[0] +" "+s.split(" ")[1]+" "+ s.split(" ")[2]);
+                writer.newLine();
             }
         }
-        BufferedWriter writer = Files.newBufferedWriter(paths);                                     // создаем поток для записи в файл
-            for (Developer dev : developersList) {                                                  // проходимся по списку
-                writer.write(dev.getId()+" "+dev.getName()+" "+ dev.getSpecialty());            // записываем данные в файл developers
-                writer.newLine();                                                                   // переходим на следующую строчку в файле
-            }
-            writer.close();                                                                         // закрываем поток во избежания утечки информации
-      }
-
-    @Override
-    public void delete(Long id) throws IOException {                    // удаление по id
-        List<Developer> newDevelopers = new ArrayList<>();              // создаем два списка
-        List<Developer> developers = getAll();                          //  в список  developers заносим всех разработчиков
-        BufferedWriter writer = Files.newBufferedWriter(paths);         // создаем поток для записи в файл
-        try {
-
-            for (Developer d : developers) {                            // проходимся по списку разработчиков и при не совпадении
-                if (d.getId() != id) {                                  // айди доваляем их в новый список если айди совпадают
-                    newDevelopers.add(d);                               //соответственно разработчик не попадает в новый список и теряется
-                }
-            }
-            for (Developer d : newDevelopers) {                             //  проходимся по новому списку разработчиков
-
-                writer.write(d.getId() + " " + d.getName() + " " + d.getSpecialty()+"");   // пишем в файл developers первые три значения остальные
-                writer.newLine();                                                               // переходим на новую строку
-            }
-            writer.close();                                                                     // закрываем файл воизбежания утечки информации
-
-            accountRepository.delete(id);                                                       // вызываем метод  delete для класса JavaIOAccountRepositoryImpl
-            skillRepository.delete(id);                                                         // вызываем метод  delete для класса JavaIOSkillsRepositoryImpl
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writer.close();
     }
 
+    @Override
+    public void delete(Long id) throws IOException {
+        List<String> list = new ArrayList<>();
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
+        BufferedWriter writer = Files.newBufferedWriter(paths);
+        while (bufferedReader.ready()) {
+            list.add(bufferedReader.readLine());
+        }
+        for (String d : list) {
+            if (Long.parseLong(d.split(" ")[0]) != id) {
+                writer.write(d.split(" ")[0] + " " + d.split(" ")[1] + " " + d.split(" ")[2] + "");
+                writer.newLine();
+            }
+        }
+        bufferedReader.close();
+        writer.close();
+        accountRepository.delete(id);
+        skillRepository.delete(id);
+
+    }
 
 
     @Override
     public Developer getById(Long id) throws IOException {
-        List<Developer> developers = new ArrayList<>(getAll());         // создаем список и добавляем в него всех разработчиков
-        for (Developer d : developers) {                                // проходимся по списку сравнивая id
-            if (d.getId() == id) return d;                              // при совпадении возвращаем разработчика
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
+        List<String> list = new ArrayList<>();
+        while (bufferedReader.ready()) {
+            list.add(bufferedReader.readLine());
         }
+        bufferedReader.close();
+
+        for (String s : list) {
+            if (Long.parseLong(s.split(" ")[0]) == id) {
+                Account account = accountRepository.getById(id);
+                Skill skill = skillRepository.getById(id);
+                Set<Skill> sk = new HashSet<>();
+                sk.add(skill);
+                return new Developer(id, s.split(" ")[1],
+                        s.split(" ")[2], account, sk);
+            }
+        }
+
 
         return null;
     }
@@ -124,11 +139,11 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
             id = Long.parseLong(temp[0]);
             name = temp[1];
             specialty = temp[2];
-           Account account = accountRepository.getById(id);    //// по id находим соответствующий Account разработчика
+            Account account = accountRepository.getById(id);    //// по id находим соответствующий Account разработчика
             Skill a = skillRepository.getById(id);            // по id находим соответствующие Skills разработчика
-            String [] sk = a.getSkill().split(",");     // рабиваем его с помощью регулярки
-            for (int i = 0; i <sk.length ; i++) {              // и добавляем в HashSet
-                skils.add(new Skill(id,sk[i]));
+            String[] sk = a.getSkill().split(",");     // рабиваем его с помощью регулярки
+            for (int i = 0; i < sk.length; i++) {              // и добавляем в HashSet
+                skils.add(new Skill(id, sk[i]));
             }
             developers.add(new Developer(id, name, specialty, account, skils));    //добавляем в список developers
         }                                                                          // созданного разработчика

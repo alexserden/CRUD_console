@@ -6,12 +6,12 @@ import com.alexander.view.SkillsView;
 
 import java.io.IOException;
 
-public class ChekInputParametr {
+public class CallMethods {
     DevelopersView developersView = new DevelopersView();
     AccountsView accountsView = new AccountsView();
     SkillsView skillsView = new SkillsView();
 
-    public ChekInputParametr() throws IOException {
+    public CallMethods() throws IOException {
     }
 
     public void showAll(String args) throws IOException {

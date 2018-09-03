@@ -1,19 +1,19 @@
 package com.alexander.model;
 
-public class Skill extends General_Id{
+public class Skill extends IdEntity {
 
-    private String skill;
+    private String name;
 
-    public Skill(Long id, String skill) {
+    public Skill(Long id, String name) {
         super(id);
-        this.skill = skill;
+        this.name = name;
     }
 
     public String getSkill() {
-        return skill;
+        return name;
     }
 
-    public void setSkill(String skill) {
-        this.skill = skill;
+    public void setSkill(String name) {
+        this.name = name;
     }
 }

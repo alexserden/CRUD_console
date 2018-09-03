@@ -1,9 +1,9 @@
 package com.alexander.model;
 
-public class General_Id {
+public class IdEntity {
     private Long id;
 
-    public General_Id(Long id) {
+    public IdEntity(Long id) {
         this.id = id;
     }
 

@@ -1,6 +1,6 @@
 package com.alexander.model;
 
-public class Account extends General_Id {
+public class Account extends IdEntity {
     private String account;
 
     public Account(Long id,String account) {

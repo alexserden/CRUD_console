@@ -2,7 +2,7 @@ package com.alexander.model;
 
 import java.util.Set;
 
-public class Developer extends General_Id {
+public class Developer extends IdEntity {
 
 
     private String name;

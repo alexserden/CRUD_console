@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 
 class Main {
     public static void main(String[] args) throws IOException {
-        ChekInputParametr chekInputParametr = new ChekInputParametr();
+        CallMethods callMethods = new CallMethods();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         String enter;
         while (true) {
             enter = bufferedReader.readLine();
             if(enter.isEmpty()) break;
-                chekInputParametr.showAll(enter);
+                callMethods.showAll(enter);
         }
     }
 }

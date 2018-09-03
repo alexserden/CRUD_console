@@ -26,9 +26,6 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
         }
 
     }
-
-
-
     @Override
     public void create(Account account) throws IOException {
 
@@ -37,17 +34,23 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
     }
     @Override
     public void update(Account account) throws IOException {
-        List<Account> accounts = getAll();
-        for (Account acc : accounts) {
-            if (acc.getId().equals(account.getId())) {
-                acc.setAccount(account.getAccount());
+        List<String> list = new ArrayList<>();
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
 
-            }
+        while (bufferedReader.ready()) {
+            list.add(bufferedReader.readLine());
         }
+        bufferedReader.close();
         BufferedWriter writer = Files.newBufferedWriter(paths);
-        for (Account account1 : accounts) {
-            writer.write(account1.getId()+" "+account1.getAccount());
-            writer.newLine();
+
+        for (String s : list) {
+            if (Long.parseLong(s.split(" ")[0]) == account.getId()) {
+                writer.write(account.getId()+" "+account.getAccount());
+                writer.newLine();
+            }else{
+                writer.write(s.split(" ")[0]+" "+s.split(" ")[1]);
+                writer.newLine();
+            }
         }
         writer.close();
     }
@@ -55,26 +58,38 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     @Override
     public void delete(Long id) throws IOException {
-        List<Account> newAccounts = new ArrayList<>();
-        List<Account> accounts = getAll();
+        List<String> list = new ArrayList<>();
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
+        while (bufferedReader.ready()) {
+            list.add(bufferedReader.readLine());
+        }
+        bufferedReader.close();
         BufferedWriter writer = Files.newBufferedWriter(paths);
 
-        for (Account a : accounts) {
-            if (a.getId() != id) newAccounts.add(a);
+        for (String a : list) {
+            if (Long.parseLong(a.split(" ")[0]) != id) {
+                writer.write(a.split(" ")[0] + " " + a.split(" ")[1] + "");
+                writer.newLine();
+            }
+            writer.close();
         }
-        for (Account a : newAccounts) {
-            writer.write(a.getId()+" "+a.getAccount());
-            writer.newLine();
-        }
-        writer.close();
     }
 
     @Override
     public Account getById(Long id) throws IOException {
-        List<Account> accounts = new ArrayList<>(getAll());
-        for (Account a : accounts) {
-            if (a.getId() == id) return a;
+        BufferedReader bufferedReader = Files.newBufferedReader(paths);
+        List<String> list = new ArrayList<>();
+        while (bufferedReader.ready()){
+            list.add(bufferedReader.readLine());
         }
+        bufferedReader.close();
+
+        for(String s : list){
+            if(Long.parseLong(s.split(" ")[0])==id){
+                return new Account(id,s.split(" ")[1]);
+            }
+        }
+
 
         return null;
     }
