@@ -27,6 +27,7 @@ public class CallMethods {
                 break;
             case "delete":
                 developersView.delete();
+
                 developersView.showAll();
                 break;
             case "update":

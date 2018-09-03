@@ -67,8 +67,6 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         for (String s : list) {
             if (Long.parseLong(s.split(" ")[0]) == developer.getId()) {
                 writer.write(developer.getId() + " " + developer.getName() + " " + developer.getSpecialty());
-                accountRepository.update(developer.getAccount());
-                skillRepository.update(developer.getSkill());
                 writer.newLine();
             }else{
                 writer.write(s.split(" ")[0] +" "+s.split(" ")[1]+" "+ s.split(" ")[2]);
